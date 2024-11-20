@@ -22,10 +22,14 @@ class MNISTModel(nn.Module):
             nn.Linear(24, 10)
         )
         
+        self.softmax = nn.Softmax(dim=1)
+        
     def forward(self, x):
         x = self.conv_layers(x)
         x = x.view(-1, 8 * 7 * 7)
         x = self.fc_layers(x)
+        if not self.training:
+            x = self.softmax(x)
         return x
 
 def create_model():
