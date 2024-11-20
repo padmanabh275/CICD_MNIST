@@ -16,6 +16,20 @@ def test_model_architecture():
     dummy_input = torch.randn(1, 1, 28, 28)
     output = model(dummy_input)
     assert output.shape == (1, 10), f"Invalid output shape: {output.shape}"
+    
+    # Test 3: Check model memory efficiency
+    model_size = sum(p.numel() * p.element_size() for p in model.parameters()) / (1024 * 1024)  # Size in MB
+    assert model_size < 1.0, f"Model size {model_size:.2f}MB exceeds 1MB limit"
+    
+    # Test 4: Verify activation functions
+    relu_count = sum(1 for m in model.modules() if isinstance(m, nn.ReLU))
+    assert relu_count >= 2, f"Model should have at least 2 ReLU activations, found {relu_count}"
+    
+    # Test 5: Check for proper regularization
+    dropout_count = sum(1 for m in model.modules() if isinstance(m, nn.Dropout))
+    batchnorm_count = sum(1 for m in model.modules() if isinstance(m, nn.BatchNorm2d))
+    assert dropout_count > 0, "Model should include dropout for regularization"
+    assert batchnorm_count > 0, "Model should include batch normalization"
 
 def test_model_predictions():
     transform = transforms.Compose([transforms.ToTensor()])
