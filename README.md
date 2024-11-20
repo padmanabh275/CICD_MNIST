@@ -1,5 +1,5 @@
 # ML Model CI/CD Pipeline
-
+![build succeeded](https://img.shields.io/badge/build-succeeded-brightgreen.svg)
 This project demonstrates a CI/CD pipeline for a simple CNN model trained on MNIST dataset.
 
 ## Project Structure 
